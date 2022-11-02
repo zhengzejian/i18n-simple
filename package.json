@@ -10,14 +10,15 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:helloworld.helloWorld"
+    "onCommand:helloworld.helloWorld",
+    "onLanguage:javascript"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "helloworld.helloWorld",
-        "title": "Hello World"
+        "title": "Hello World11111111122222"
       }
     ]
   },
