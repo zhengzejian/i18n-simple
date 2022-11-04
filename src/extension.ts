@@ -97,6 +97,8 @@ export function activate(context: vscode.ExtensionContext) {
 			// 	}
 			// })
 
+			if (decorationsData.length) {decorationsData.forEach(item => editor.setDecorations(item, []));};
+
 			let translateContent = content.match(i18nRe) || [];
 			translateContent = translateContent.map(item => item.replace(i18nRe, '$2'));
 			let notTranslateKeyArr = translateContent.filter(key => {
@@ -105,7 +107,7 @@ export function activate(context: vscode.ExtensionContext) {
 					let start = content.indexOf(key);
 					let end = start + key.length;
 
-					// if (decorationsData.length) {decorationsData.forEach(item => editor.setDecorations(item));};
+					
 
 					let decoration = vscode.window.createTextEditorDecorationType({
 						before: {
@@ -116,7 +118,7 @@ export function activate(context: vscode.ExtensionContext) {
 						}
 					});
 
-					// decorationsData.push(decoration);
+					decorationsData.push(decoration);
 
 					let startPos = editor.document.positionAt(start);
 					let endPos = editor.document.positionAt(end);
