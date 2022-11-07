@@ -35,6 +35,14 @@ function getValByPath(key, source, defaultVal) {
     return isUndef(tempObj) ? defaultVal : tempObj;
 }
 
+function debounce(fn, delay = 50) {
+	let timer = null;
+	return function() {
+		if (timer) {clearTimeout(timer);};
+		timer = setTimeout(() => fn.apply(this, arguments), delay);
+	};
+}
+
 function init() {
 	const tempDir = fs.mkdtempSync('translateData');
 	let rootPath = vscode.workspace.workspaceFolders?.[0].uri.fsPath;
@@ -68,67 +76,45 @@ function init() {
 
 let decorationsData = [];
 
+let refresh = debounce(() => {
+	vscode.window.visibleTextEditors.forEach(editor => {
+		let content = editor.document.getText();
+		if (decorationsData.length) {decorationsData.forEach(item => editor.setDecorations(item, []));};
+		while(i18nRe.test(content)) {
+			let endStart =i18nRe.lastIndex - 4;
+			let contentPart = content.substring(0, i18nRe.lastIndex);
+			while(![`"`, `'`].includes(contentPart[endStart])) { endStart--; }
+			let translateKey = content.slice(endStart + 1, i18nRe.lastIndex - 2);
+
+			let text = getValByPath(translateKey, translateDataMap);
+			if (text) {
+				let decoration = vscode.window.createTextEditorDecorationType({
+					before: {
+						color: '#494949',
+						margin: '5px',
+						contentText: text,
+						textDecoration: 'none'
+					}
+				});
+
+				decorationsData.push(decoration);
+
+				let startPos = editor.document.positionAt(endStart+1);
+				let endPos = editor.document.positionAt(i18nRe.lastIndex - 1);
+				const range = new vscode.Range(startPos, endPos);
+				editor.setDecorations(decoration, [range]);
+			}
+		}
+	});
+}, 500);
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 	init();
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "helloworld" is now active!');
-    console.log('vscode.window.visibleTextEditors: ', vscode.window.visibleTextEditors);
-	
 
 	vscode.workspace.onDidChangeTextDocument(e => {
-		// init();
-		vscode.window.visibleTextEditors.forEach(editor => {
-			let content = editor.document.getText();
-
-			// let translateContent = content.match(i18nRe) || []
-			// let isReplaced = false
-			// translateContent.forEach(item => {
-			// 	let copywriting = item.replace(i18nRe, '$2')
-
-			// 	let key = translatedData[copywriting]
-			// 	if (key) {
-			// 		copywriting = escapeSpecialCharacter(copywriting)
-			// 		let re = `(\\$t\\(('|"))${copywriting}(\\2\\))`
-			// 		content = content.replace(new RegExp(re), `$1${key}$3`)
-			// 		isReplaced = true
-			// 	}
-			// })
-
-			if (decorationsData.length) {decorationsData.forEach(item => editor.setDecorations(item, []));};
-
-			let translateContent = content.match(i18nRe) || [];
-			translateContent = translateContent.map(item => item.replace(i18nRe, '$2'));
-			let notTranslateKeyArr = translateContent.filter(key => {
-				let text = getValByPath(key, translateDataMap);
-				if (text) {
-					let start = content.indexOf(key);
-					let end = start + key.length;
-
-					
-
-					let decoration = vscode.window.createTextEditorDecorationType({
-						before: {
-							color: '#494949',
-							margin: '5px',
-							contentText: text,
-							textDecoration: 'none'
-						}
-					});
-
-					decorationsData.push(decoration);
-
-					let startPos = editor.document.positionAt(start);
-					let endPos = editor.document.positionAt(end);
-					const range = new vscode.Range(startPos, endPos);
-					editor.setDecorations(decoration, [range]);
-				}
-			});
-
-			
-		});
+		refresh();
 		// console.log('onDidChangeTextDocument: ', e)
 	});
 	// The command has been defined in the package.json file
