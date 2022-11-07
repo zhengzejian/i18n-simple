@@ -8,10 +8,9 @@
     },
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
     "typescript.tsc.autoDetect": "off",
-    "i18n-ally.localesPaths": [],
-    "sync.autoDownload": false,
-    "sync.syncExtensions": false,
-    "gitlens.proxy": {
-    
-    }
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+       "source.fixAll.eslint": true
+    },
+    "localesPaths": "asdasdsad",
 }

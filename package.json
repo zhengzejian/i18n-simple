@@ -20,7 +20,17 @@
         "command": "helloworld.helloWorld",
         "title": "Hello World11111111122222"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "i18n-simple",
+      "properties": {
+        "i18n-simple.localesPaths": {
+          "type": "string",
+          "description": "翻译文件目录"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
