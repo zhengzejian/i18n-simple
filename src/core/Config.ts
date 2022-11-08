@@ -2,6 +2,8 @@ import { workspace, ConfigurationScope } from 'vscode';
 
 const EXT_NAMESPACE = 'i18n-simple';
 
+export const TRANSLATE_FILE_TYPE = ['javascript', 'typescript', 'html', 'vue', 'vue-html'];
+
 export class Config {
     static readonly reloadConfigs = [
         'localesPaths'

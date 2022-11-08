@@ -14,6 +14,7 @@ export class SourceData {
         let rootPath = SourceData.getRootPath();
         SourceData.translateDataMap = {};
         if (!rootPath) return;
+
         const tempDir = fs.mkdtempSync('translateData');
         const translateFiles = glob.sync(Config._localesPaths, { cwd: rootPath });
         const TEMP_FILE = path.resolve(tempDir, 'TEMP.js');
