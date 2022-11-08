@@ -15,8 +15,9 @@ export class SourceData {
         SourceData.translateDataMap = {};
         if (!rootPath) return;
 
+        if (!Config.localesPaths) return;
         const tempDir = fs.mkdtempSync('translateData');
-        const translateFiles = glob.sync(Config._localesPaths, { cwd: rootPath });
+        const translateFiles = glob.sync(Config.localesPaths, { cwd: rootPath });
         const TEMP_FILE = path.resolve(tempDir, 'TEMP.js');
         translateFiles.forEach(async (file: String) => {
             let filePath = path.resolve(rootPath, file);
@@ -29,6 +30,7 @@ export class SourceData {
             const data = require(TEMP_FILE);
             Object.assign(SourceData.translateDataMap, data);
         });
+        SourceData.watchFile();
     }
 
     static watchFile() {
@@ -36,7 +38,7 @@ export class SourceData {
         let rootPath = SourceData.getRootPath();
         if (!rootPath) return;
 
-        const watcher = workspace.createFileSystemWatcher(new RelativePattern(rootPath as string, Config._localesPaths));
+        const watcher = workspace.createFileSystemWatcher(new RelativePattern(rootPath as string, Config.localesPaths));
 
         watcher.onDidChange(SourceData.update);
         watcher.onDidCreate(SourceData.update);

@@ -1,5 +1,5 @@
 import { window, Range, TextEditorDecorationType, TextEditor } from 'vscode';
-import { TRANSLATE_FILE_TYPE } from './Config';
+import { TRANSLATE_FILE_TYPE, Config } from './Config';
 import { SourceData } from './SourceData';
 const { i18nRe, getValByPath, debounce } = require('./utils');
 
@@ -28,7 +28,7 @@ export class Translator {
             if (text) {
                 let decoration = window.createTextEditorDecorationType({
                     before: {
-                        color: '#494949',
+                        color: Config.color,
                         margin: '5px',
                         contentText: text,
                         textDecoration: 'none'

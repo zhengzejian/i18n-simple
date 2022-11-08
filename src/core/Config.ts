@@ -2,12 +2,13 @@ import { workspace, ConfigurationScope } from 'vscode';
 
 const EXT_NAMESPACE = 'i18n-simple';
 
-export const TRANSLATE_FILE_TYPE = ['javascript', 'typescript', 'html', 'vue', 'vue-html'];
+export const TRANSLATE_FILE_TYPE = ['javascript', 'typescript', 'html', 'vue', 'vue-html', 'plaintext'];
 
 export class Config {
     static readonly reloadConfigs = [
         'localesPaths'
     ];
+    static isDirty = true;
 
     private static getConfig<T = any>(key: string, scope?: ConfigurationScope | undefined): T | undefined {
         let config = workspace
@@ -16,7 +17,11 @@ export class Config {
         return config;
     }
 
-    static get _localesPaths(): string | undefined {
+    static get localesPaths(): string | undefined {
         return this.getConfig('localesPaths');
+    }
+
+    static get color() {
+        return this.getConfig('color');
     }
 }

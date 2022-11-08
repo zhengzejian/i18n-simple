@@ -6,21 +6,15 @@ import { debounceTranslate } from './core/Translator';
 // Your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
 	SourceData.update();
-	SourceData.watchFile();
 
 	workspace.onDidChangeTextDocument(debounceTranslate);
-	workspace.onDidChangeConfiguration(SourceData.update);
 	workspace.onDidOpenTextDocument(debounceTranslate);
+	workspace.onDidChangeConfiguration(SourceData.update);
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = commands.registerCommand('helloworld.helloWorld22222', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		window.showWarningMessage('Hello Vs code!');
-	});
 
-	context.subscriptions.push(disposable);
+	// context.subscriptions.push(disposable);
 }
 
 // This method is called when your extension is deactivated

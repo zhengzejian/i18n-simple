@@ -10,17 +10,13 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:helloworld.helloWorld",
-    "onLanguage:javascript"
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:html",
+    "onLanguage:vue"
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "helloworld.helloWorld",
-        "title": "Hello World11111111122222"
-      }
-    ],
     "configuration": {
       "type": "object",
       "title": "i18n-simple",
@@ -28,6 +24,11 @@
         "i18n-simple.localesPaths": {
           "type": "string",
           "description": "翻译文件目录"
+        },
+        "i18n-simple.color": {
+          "type": "string",
+          "default": "#494949",
+          "description": "字体颜色"
         }
       }
     }
