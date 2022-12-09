@@ -1,8 +1,9 @@
 {
+  "publisher": "zhengzejian",
   "name": "i18n-simple",
   "displayName": "i18n-simple",
   "description": "A simple i18n extension for VS Code",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.72.0"
   },
@@ -10,11 +11,13 @@
     "Other"
   ],
   "activationEvents": [
+    "workspaceContains:**/*.vue",
     "onLanguage:javascript",
     "onLanguage:typescript",
     "onLanguage:html",
     "onLanguage:vue"
   ],
+  "icon": "assets/logo.jpg",
   "main": "./out/extension.js",
   "contributes": {
     "configuration": {
